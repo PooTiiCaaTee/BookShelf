@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Detail</title>
+    <link rel="stylesheet" href="book-detail-style.css">
+</head>
+<body>
+    <header>
+        <a href="index.html" data-en="← Back" data-fr="← Retour" data-ar="العودة →">← Back</a>
+        <div class="header-right">
+            <div id="lang-group">
+                <button onclick="changeLanguage('en')">EN</button>
+                <button onclick="changeLanguage('fr')">FR</button>
+                <button onclick="changeLanguage('ar')">AR</button>
+            </div>
+            <div id="theme-group">
+                <button onclick="changeTheme('dark')"   data-en="Dark"   data-fr="Sombre" data-ar="داكن">Dark</button>
+                <button onclick="changeTheme('normal')" data-en="Normal" data-fr="Normal" data-ar="عادي">Normal</button>
+            </div>
+            <div id="auth-header-placeholder"></div>
+        </div>
+    </header>
+
+    <main>
+        <div class="detail-card">
+            <div class="detail-card-header">
+                <div class="detail-book-3d" id="bd-cover-wrap">
+                    <div class="detail-book-3d-inner" id="bd-cover-inner">
+                        <div class="detail-book-face" id="bd-cover-face">
+                            <span class="detail-book-face-title" id="bd-cover-title"></span>
+                        </div>
+                        <div class="detail-book-spine" id="bd-cover-spine"></div>
+                    </div>
+                    <div class="detail-book-shadow"></div>
+                </div>
+                <div class="detail-title-block">
+                    <div id="bd-book-title">—</div>
+                    <div id="bd-book-author">—</div>
+                    <div class="bd-meta" id="bd-meta-tags"></div>
+                </div>
+                <div style="margin-left:auto; flex-shrink:0; align-self:flex-start;">
+                    <a id="bd-edit-btn" href="#" style="font-family:'DM Mono',monospace; font-size:.6rem; letter-spacing:.14em; text-transform:uppercase; padding:7px 16px; border:1px solid var(--gold-dim); border-radius:2px; color:var(--gold); text-decoration:none; display:inline-flex; align-items:center; gap:6px; white-space:nowrap; transition:background .2s, color .2s, border-color .2s;"
+                    onmouseover="this.style.background='var(--gold)';this.style.color='var(--black)';this.style.borderColor='var(--gold)'"
+                    onmouseout="this.style.background='transparent';this.style.color='var(--gold)';this.style.borderColor='var(--gold-dim)'">
+                        ✏️ <span id="bd-edit-label">Edit</span>
+                    </a>
+                </div>
+            </div>
+            <div class="detail-body">
+                <div id="bd-book-summary"></div>
+                <div id="bd-rating-section">
+                    <div class="bd-rating-row">
+                        <div class="bd-rating-col">
+                            <div class="bd-section-label" data-en="Your rating" data-fr="Votre note" data-ar="تقييمك">Your rating</div>
+                            <div id="bd-stars"></div>
+                        </div>
+                        <div class="bd-fav-col">
+                            <div class="bd-section-label" data-en="Favorite" data-fr="Favori" data-ar="المفضلة">Favorite</div>
+                            <button id="bd-fav-btn" onclick="bd_toggleFav()">🤍</button>
+                        </div>
+                    </div>
+                </div>
+                <div id="bd-doc-section" style="display:none">
+                    <div class="bd-section-label" data-en="Document" data-fr="Document" data-ar="الوثيقة">Document</div>
+                    <div id="bd-url-section"></div>
+                    <div id="bd-pdf-section"></div>
+                </div>
+                <div id="bd-comments-wrapper">
+                    <div id="bd-comments-label" class="bd-section-label">💬 Comments</div>
+                    <div id="auth-comments-section"></div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <script src="book-detail.js"></script>
+    <script src="theme-switch.js"></script>
+    <script src="langague-switch.js"></script>
+    <script src="comments.js"></script>
+
+    <script>
+//some scriptes importent for windows browser and buttom (testé)
+        (function (){
+            var placeholder = document.getElementById('auth-header-placeholder');
+            if (placeholder) {
+                var tmp = document.createElement('div');
+                tmp.innerHTML = auth_headerHTML();
+                placeholder.replaceWith(tmp.firstElementChild);
+            }
+            auth_init();
+        })();
+
+        window.addEventListener('load', function (){
+            var params = new URLSearchParams(window.location.search);
+            var bookId = params.get('id') || null;
+            auth_renderComments(bookId);
+
+            var editBtn = document.getElementById('bd-edit-btn');
+            if (editBtn && bookId){
+                editBtn.href = '#';
+                editBtn.addEventListener('click', function(e){
+                    e.preventDefault();
+                    var lang = localStorage.getItem('preferredLanguage') || 'en';
+                    var msg = lang === 'fr'
+                        ? 'Vous allez modifier ce livre.\nCliquez sur OK pour accéder à la page de modification.'
+                        : lang === 'ar'
+                        ? 'سيتم تعديل هذا الكتاب.\nانقر على موافق للانتقال إلى صفحة التعديل.'
+                        : 'You are about to edit this book.\nClick OK to go to the edit page.';
+                    if (confirm(msg)) {
+                        window.location.href = 'add-book.html?edit=' + bookId;
+                    }
+                });
+            }
+
+            function updateEditLabel() {
+                var el = document.getElementById('bd-edit-label');
+                if (!el) return;
+                var lang = localStorage.getItem('preferredLanguage') || 'en';
+                el.textContent = lang === 'fr' ? 'Modifier'
+                               : lang === 'ar' ? 'تعديل'
+                               : 'Edit';
+            }
+            updateEditLabel();
+
+            function updateCommentsLabel() {
+                var el = document.getElementById('bd-comments-label');
+                if (!el) return;
+                var lang = localStorage.getItem('preferredLanguage') || 'en';
+                el.textContent = lang === 'fr' ? '💬 Commentaires'
+                               : lang === 'ar' ? '💬 التعليقات'
+                               : '💬 Comments';
+            }
+            updateCommentsLabel();
+
+            var _origLang = window.changeLanguage;
+            window.changeLanguage = function (lang) {
+                if (_origLang) _origLang(lang);
+                updateCommentsLabel();
+                updateEditLabel();
+                auth_renderComments(bookId);
+            };
+        });
+    </script>
+
+    <style>
+/*style of commenter zone */
+        #bd-comments-wrapper {
+            margin-top: 36px;
+            padding-top: 28px;
+            border-top: 1px solid var(--border);
+        }
+        #bd-comments-label {
+            margin-bottom: 20px;
+        }
+
+        body.theme-normal #bd-edit-btn {
+            color: #8b5e2a !important;
+            border-color: rgba(139,94,42,.4) !important;
+        }
+        body.theme-normal #bd-edit-btn:hover {
+            background: #8b5e2a !important;
+            color: #fff !important;
+            border-color: #8b5e2a !important;
+        }
+
+        #auth-user-info button[onclick="auth_handleLogout()"] {
+            display: none !important;
+        }
+
+        body.theme-normal #bd-comments-wrapper {
+            border-color: rgba(180,130,70,.2);
+        }
+        body.theme-normal #bd-comments-label {
+            color: #a07840 !important;
+        }
+        body.theme-normal #auth-comments-section textarea {
+            background: rgba(255,255,255,.7) !important;
+            border-color: rgba(180,130,70,.3) !important;
+            color: #2a1f14 !important;
+        }
+        body.theme-normal #auth-comments-section > div {
+            background: rgba(255,255,255,.25) !important;
+            border-color: rgba(180,130,70,.2) !important;
+        }
+        body.theme-normal #auth-comments-section span {
+            color: #2a1f14 !important;
+        }
+        body.theme-normal #auth-comments-section p {
+            color: rgba(42,31,20,.75) !important;
+        }
+        body.theme-normal #auth-comments-section div[style*="background:var(--gold)"] {
+            background: #8b5e2a !important;
+            color: #fff !important;
+        }
+    </style>
+</body>
+</html>

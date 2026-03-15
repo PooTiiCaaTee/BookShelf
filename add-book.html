@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajouter un livre</title>
+    <link rel="stylesheet" href="add-book-style.css">
+</head>
+<body>
+    <header>
+        <a href="index.html" data-fr="← Retour Home" data-en="← Back Home" data-ar="العودة للرئيسية →">← Back Home</a>
+        <div class="header-right">
+            <div id="lang-group">
+                <button onclick="changeLanguage('en')">EN</button>
+                <button onclick="changeLanguage('fr')">FR</button>
+                <button onclick="changeLanguage('ar')">AR</button>
+            </div>
+            <div id="theme-group">
+                <button onclick="changeTheme('dark')"   data-en="Dark"   data-fr="Sombre" data-ar="داكن">Dark</button>
+                <button onclick="changeTheme('normal')" data-en="Normal" data-fr="Normal" data-ar="عادي">Normal</button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="glass-card">
+            <div class="card-header">
+                <h2 id="ab-form-title" data-fr="Nouveau livre" data-en="New book" data-ar="كتاب جديد">New book</h2>
+                <span id="ab-mode-tag" data-fr="Ajout" data-en="Add" data-ar="إضافة">Add</span>
+                <span id="ab-count-badge">0</span>
+            </div>
+            <div class="left-col">
+                <div id="ab-preview">
+                    <p data-fr="Aperçu" data-en="Preview" data-ar="معاينة">Preview</p>
+                    <div class="preview-row">
+                        <div class="ab-book-3d">
+                            <div class="ab-book-3d-inner">
+                                <div class="ab-book-face" id="ab-pv-cover-gen">
+                                    <span class="ab-book-face-title" id="ab-pv-cover-title">?</span>
+                                    <div class="ab-book-face-deco"></div>
+                                </div>
+                                <div class="ab-book-spine" id="ab-pv-spine"></div>
+                            </div>
+                            <div class="ab-book-shadow"></div>
+                        </div>
+                        <div class="preview-texts">
+                            <p id="ab-pv-title"   data-fr="Titre du livre"    data-en="Book title"    data-ar="عنوان الكتاب">Book title</p>
+                            <p id="ab-pv-author"  data-fr="Nom de l'auteur"   data-en="Author name"   data-ar="اسم المؤلف">Author name</p>
+                            <p id="ab-pv-summary" data-fr="Le résumé apparaîtra ici…" data-en="Summary will appear here…" data-ar="سيظهر الملخص هنا…">Summary will appear here…</p>
+                        </div>
+                    </div>
+                </div>
+                <section id="ab-list-section">
+                    <h2>
+                        <span data-fr="Ma bibliothèque" data-en="My library" data-ar="مكتبتي">My library</span>
+                        <span id="ab-count-badge-2"></span>
+                    </h2>
+                    <div id="ab-book-list"></div>
+                </section>
+            </div>
+            <div class="right-col">
+                <div class="form-group">
+                    <label for="ab-title" data-fr="Titre du livre *" data-en="Book title *" data-ar="عنوان الكتاب *">Book title *</label>
+                    <input type="text" id="ab-title" maxlength="120" data-fr-ph="ex. Le Grand Gatsby" data-en-ph="e.g. The Great Gatsby" data-ar-ph="مثال: البؤساء" placeholder="e.g. The Great Gatsby">
+                </div>
+                <div class="form-group">
+                    <label for="ab-author" data-fr="Auteur *" data-en="Author *" data-ar="المؤلف *">Author *</label>
+                    <input type="text" id="ab-author" maxlength="100" data-fr-ph="ex. F. Scott Fitzgerald" data-en-ph="e.g. F. Scott Fitzgerald" data-ar-ph="مثال: فيكتور هوغو" placeholder="e.g. F. Scott Fitzgerald">
+                </div>
+                <div class="form-group">
+                    <label for="ab-summary" data-fr="Résumé court" data-en="Short summary" data-ar="ملخص قصير">Short summary</label>
+                    <textarea id="ab-summary" rows="3" maxlength="320" data-fr-ph="Thème, ton, ou ce qui le rend mémorable…" data-en-ph="Theme, tone, or what makes it memorable…" data-ar-ph="الموضوع، أو ما يجعله لا يُنسى…" placeholder="Theme, tone, or what makes it memorable…"></textarea>
+                    <small id="ab-char-hint">0 / 320</small>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="ab-pubdate" data-fr="Date de publication" data-en="Publication date" data-ar="تاريخ النشر">Publication date</label>
+                        <input type="date" id="ab-pubdate" min="1000-01-01" max="2100-12-31">
+                    </div>
+                    <div class="form-group">
+                        <label for="ab-writtendate" data-fr="Date d'écriture" data-en="Writing date" data-ar="تاريخ الكتابة">Writing date</label>
+                        <input type="date" id="ab-writtendate" min="1000-01-01" max="2100-12-31">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="ab-genre" data-fr="Genre" data-en="Genre" data-ar="النوع الأدبي">Genre</label>
+                    <input type="text" id="ab-genre" data-fr-ph="ex. Roman, Science-fiction…" data-en-ph="e.g. Novel, Science fiction…" data-ar-ph="مثال: رواية، خيال علمي…" placeholder="e.g. Novel, Science fiction…">
+                </div>
+                <div class="form-group">
+                    <label data-fr="Statut de lecture" data-en="Reading status" data-ar="حالة القراءة">Reading status</label>
+                    <div class="status-btn-group" id="ab-status-group">
+                        <button type="button" class="status-btn" data-value="toread" data-en="🔖 To Read" data-fr="🔖 À lire" data-ar="🔖 للقراءة">🔖 To Read</button>
+                        <button type="button" class="status-btn" data-value="reading" data-en="📖 Reading" data-fr="📖 En cours" data-ar="📖 جاري">📖 Reading</button>
+                        <button type="button" class="status-btn active" data-value="read" data-en="✅ Read" data-fr="✅ Lu" data-ar="✅ مقروء">✅ Read</button>
+                    </div>
+                    <input type="hidden" id="ab-status" value="toread">
+                </div>
+                <div class="form-group">
+                    <label data-fr="Lien document (optionnel)" data-en="Document link (optional)" data-ar="رابط الوثيقة (اختياري)">Document link (optional)</label>
+                    <div class="tab-bar">
+                        <button type="button" id="ab-tab-url" class="active" data-fr="🔗 URL" data-en="🔗 URL" data-ar="🔗 رابط">🔗 URL</button>
+                        <button type="button" id="ab-tab-pdf" data-fr="📄 PDF local" data-en="📄 Local PDF" data-ar="📄 PDF محلي">📄 Local PDF</button>
+                    </div>
+                    <div id="ab-doc-url-wrap">
+                        <div class="url-row">
+                            <input type="url" id="ab-doclink" placeholder="https://…">
+                            <span id="ab-url-indicator">🔗</span>
+                        </div>
+                    </div>
+                    <div id="ab-doc-pdf-wrap" style="display:none">
+                        <div id="ab-pdf-dropzone">
+                            <p data-fr="cliquer pour choisir" data-en="Drag a PDF here or click to choose" data-ar="اسحب ملف PDF هنا أو انقر للاختيار">Drag a PDF here or click to choose</p>
+                        </div>
+                        <input type="file" id="ab-pdf-input" accept=".pdf,application/pdf" style="display:none">
+                        <div id="ab-pdf-info">
+                            📄 <span id="ab-pdf-name"></span>
+                            <button type="button" id="ab-btn-clear-pdf">✕</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label data-fr="Couleur de couverture" data-en="Cover color" data-ar="لون الغلاف">Cover color</label>
+                    <div id="ab-color-row"></div>
+                </div>
+                <div class="form-actions">
+                    <button type="button" id="ab-btn-reset" data-fr="Effacer" data-en="Clear" data-ar="مسح">Clear</button>
+                    <button type="button" id="ab-save-btn" data-fr="Enregistrer →" data-en="Save →" data-ar="← حفظ">Save →</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="ab-toasts"></div>
+
+    <script src="add-book.js"></script>
+    <script src="theme-switch.js"></script>
+    <script src="langague-switch.js"></script>
+</body>
+</html>

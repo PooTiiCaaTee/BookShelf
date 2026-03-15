@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bookshelf</title>
+    <link rel="stylesheet" href="them-control.css">
+    <link rel="stylesheet" href="books.css">
+    <link rel="stylesheet" href="style-index.css">
+</head>
+<body>
+
+    <header>
+        <div class="header-left">
+            <div id="theme-group">
+                <button onclick="changeTheme('dark')"   data-en="Dark"   data-fr="Sombre" data-ar="داكن">Dark</button>
+                <button onclick="changeTheme('normal')" data-en="Normal" data-fr="Normale" data-ar="عادي">Normal</button>
+            </div>
+            <div id="lang-group">
+                <button onclick="changeLanguage('en')">EN</button>
+                <button onclick="changeLanguage('fr')">FR</button>
+                <button onclick="changeLanguage('ar')">AR</button>
+            </div>
+        </div>
+        <div class="header-center">
+            <div id="search-wrap">
+                <span class="search-icon">⌕</span>
+                <input type="text" id="genre-filter" data-en-ph="Search by title, author or genre…" data-fr-ph="Rechercher par titre, auteur ou genre…" data-ar-ph="بحث بالعنوان أو المؤلف أو النوع…" placeholder="Search by title, author or genre…"/>
+            </div>
+        </div>
+        <div class="header-right">
+            <h1 data-en="My Bookshelf" data-fr="Ma Bibliothèque" data-ar="مكتبتي">My Bookshelf</h1>
+            <div class="header-stats" id="header-stats">
+                <span class="hstat" title="Total">📚 <strong id="stat-total">0</strong></span>
+                <span class="hstat-sep">·</span>
+                <span class="hstat" title="Read">✅ <strong id="stat-read">0</strong></span>
+                <span class="hstat-sep">·</span>
+                <span class="hstat" title="Reading">📖 <strong id="stat-reading">0</strong></span>
+                <span class="hstat-sep">·</span>
+                <span class="hstat" title="To Read">🔖 <strong id="stat-toread">0</strong></span>
+                <span class="hstat-sep">·</span>
+                <span class="hstat" title="Favorites">❤️ <strong id="stat-fav">0</strong></span>
+            </div>
+            <a href="add-book.html" class="home-btn-add"
+               data-en="+ Add Book" data-fr="+ Ajouter" data-ar="+ إضافة">+ Add Book</a>
+            <div id="auth-header-placeholder"></div>
+        </div>
+    </header>
+    <nav class="tab-nav" id="tab-nav">
+        <button class="tab-nav-btn active" onclick="ab_switchTab('all', event)"
+            data-en="All Books" data-fr="Tous les livres" data-ar="جميع الكتب">All Books</button>
+        <button class="tab-nav-btn" onclick="ab_switchTab('favorites', event)"
+            data-en="❤️ Favorites" data-fr="❤️ Favoris" data-ar="❤️ المفضلة">❤️ Favorites</button>
+        <button class="tab-nav-btn" onclick="ab_switchTab('history', event)"
+            data-en="🕓 History" data-fr="🕓 Historique" data-ar="🕓 السجل">🕓 History</button>
+        <div id="tab-view-toggle" class="view-toggle" style="margin-left:auto; display:flex; align-items:center; padding: 0 16px;">
+            <button class="view-btn active" id="btn-grid" onclick="ab_setView('grid')" title="Grid">⊞</button>
+            <button class="view-btn"        id="btn-list" onclick="ab_setView('list')" title="List">☰</button>
+        </div>
+    </nav>
+
+    <main>
+        <div class="tab-panel active" id="tab-all">
+            <div id="books-container" class="books-grid-view"></div>
+        </div>
+        <div class="tab-panel" id="tab-favorites">
+            <div id="favorites-container" class="books-grid-view"></div>
+        </div>
+        <div class="tab-panel" id="tab-history">
+            <div class="tab-toolbar">
+                <button class="section-clear-btn" onclick="ab_clearHistory()" data-en="Clear history" data-fr="Effacer l'historique" data-ar="مسح السجل">🗑 Clear history</button>
+            </div>
+            <div id="history-container" class="books-row"></div>
+        </div>
+    </main>
+
+    <div id="toasts"></div>
+
+    <script src="theme-switch.js"></script>
+    <script src="langague-switch.js"></script>
+    <script src="comments.js"></script>
+    <script src="add-book-at-index.js"></script>
+
+    <script src="test.js"></script>
+</body>
+</html>
